@@ -54,24 +54,22 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 
     self.fractionalWidthOfAPixel = 0.05;
     
+    
+    
     return self;
 }
 
 - (void)setInputSize:(CGSize)newSize atIndex:(NSInteger)textureIndex;
 {
-    CGSize oldInputSize = inputTextureSize;
     [super setInputSize:newSize atIndex:textureIndex];
     
-    if ( (!CGSizeEqualToSize(oldInputSize, inputTextureSize)) && (!CGSizeEqualToSize(newSize, CGSizeZero)) )
+    if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
     {
-        if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
-        {
-            [self setAspectRatio:(inputTextureSize.width / inputTextureSize.height)];
-        }
-        else
-        {
-            [self setAspectRatio:(inputTextureSize.height / inputTextureSize.width)];
-        }
+        [self setAspectRatio:(inputTextureSize.width / inputTextureSize.height)];
+    }
+    else
+    {
+        [self setAspectRatio:(inputTextureSize.height / inputTextureSize.width)];
     }
 }
 
